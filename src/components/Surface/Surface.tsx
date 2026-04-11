@@ -61,10 +61,13 @@ const Surface = forwardRef<HTMLDivElement, SurfaceProps>(
 
     const computedStyle: CSSProperties = {
       background: bgVar,
-      borderRadius: rounded ? '12px' : undefined,
+      borderRadius: rounded ? '22px' : undefined,
+      border: '1px solid var(--hsn-border-secondary)',
+      backdropFilter: variant === 'glass' ? 'blur(18px) saturate(140%)' : undefined,
       boxShadow: shadowValue,
       padding: typeof padding === 'number' ? `${padding}px` : padding,
       position: 'relative',
+      overflow: 'hidden',
       zIndex: zIndex.base,
       ...style,
     };

@@ -151,11 +151,11 @@ export const spacing = {
 
 export const radii = {
   none: '0px',
-  sm: '4px',
-  md: '8px',
-  lg: '12px',
-  xl: '16px',
-  '2xl': '24px',
+  sm: '8px',
+  md: '12px',
+  lg: '18px',
+  xl: '24px',
+  '2xl': '32px',
   full: '9999px',
 } as const;
 

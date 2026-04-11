@@ -115,13 +115,13 @@ const Typography = forwardRef<HTMLElement, TypographyProps>(
       lineHeight: sizeSpec.lineHeight,
       fontWeight: weight,
       fontFamily: mono
-        ? "'JetBrains Mono', 'Fira Code', monospace"
-        : "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        ? "'JetBrains Mono', 'SFMono-Regular', 'Fira Code', monospace"
+        : "'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       color: resolvedColor,
       textTransform: uppercase ? 'uppercase' : undefined,
       textAlign: align,
       userSelect: selectable ? undefined : 'none',
-      letterSpacing: uppercase ? '0.05em' : undefined,
+      letterSpacing: uppercase ? '0.05em' : '-0.02em',
       margin: 0,
       padding: 0,
       ...overflowStyles,
