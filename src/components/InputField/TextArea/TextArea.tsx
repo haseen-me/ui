@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef } from 'react';
+import React, { CSSProperties, forwardRef, useState } from 'react';
 
 import { FONT_FAMILY_SANS } from '../../../constants';
 import { transitions } from '../../../tokens';
@@ -46,15 +46,40 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     },
     ref
   ) => {
+    const [focused, setFocused] = useState(false);
+    const [hovered, setHovered] = useState(false);
+
+    let border = '1px solid var(--hsn-border-input)';
+    let background = 'var(--hsn-bg-field-default)';
+    let boxShadow = 'none';
+
+    if (disabled) {
+      border = '1px solid var(--hsn-border-primary)';
+      background = 'var(--hsn-bg-field-disabled)';
+    } else if (error && focused) {
+      border = '1px solid var(--hsn-border-input-error)';
+      background = 'var(--hsn-bg-field-error)';
+      boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.15)';
+    } else if (error) {
+      border = '1px solid var(--hsn-border-input-error)';
+      background = 'var(--hsn-bg-field-error)';
+    } else if (focused) {
+      border = '1px solid var(--hsn-border-input-focus)';
+      background = 'var(--hsn-bg-field-default)';
+      boxShadow = '0 0 0 3px rgba(45, 184, 175, 0.15)';
+    } else if (hovered) {
+      border = '1px solid var(--hsn-border-input-hover)';
+      background = 'var(--hsn-bg-field-hover)';
+    }
+
     const wrapperStyle: CSSProperties = {
       display: 'flex',
       padding: '8px 12px',
-      borderRadius: '8px',
-      background: error ? 'var(--hsn-bg-overlay-destructive)' : 'var(--hsn-bg-field-default)',
-      border: error
-        ? '1px solid var(--hsn-border-destructive)'
-        : '1px solid var(--hsn-border-secondary)',
-      transition: `all ${transitions.normal} ${transitions.easing}`,
+      borderRadius: '6px',
+      background,
+      border,
+      boxShadow,
+      transition: `border-color ${transitions.fast} ${transitions.easing}, box-shadow ${transitions.fast} ${transitions.easing}, background ${transitions.fast} ${transitions.easing}`,
       cursor: disabled ? 'not-allowed' : 'text',
       opacity: disabled ? 0.6 : 1,
       width: '100%',
@@ -69,21 +94,28 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       fontSize: '0.8125rem',
       fontFamily: FONT_FAMILY_SANS,
       fontWeight: 400,
-      color: 'var(--hsn-text-primary)',
+      color: disabled ? 'var(--hsn-text-disabled)' : 'var(--hsn-text-primary)',
+      caretColor: 'var(--hsn-border-input-focus)',
       resize: 'vertical',
       padding: 0,
       width: '100%',
-      lineHeight: '1.5',
+      lineHeight: '1.6',
+      cursor: disabled ? 'not-allowed' : 'text',
     };
 
     return (
-      <div className={className} style={wrapperStyle}>
+      <div
+        className={className}
+        style={wrapperStyle}
+        onMouseEnter={() => !disabled && setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <textarea
           ref={ref}
           value={value}
           onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          onFocus={(e) => { setFocused(true); onFocus?.(e); }}
+          onBlur={(e) => { setFocused(false); onBlur?.(e); }}
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           disabled={disabled}
@@ -95,6 +127,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           id={id}
           style={textAreaStyle}
           data-testid={dataTestId}
+          aria-invalid={error || undefined}
         />
       </div>
     );

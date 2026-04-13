@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef } from 'react';
+import React, { CSSProperties, forwardRef, useState } from 'react';
 
 import { FONT_FAMILY_SANS } from '../../constants';
 import { radii, sizeHeight, transitions } from '../../tokens';
@@ -24,53 +24,90 @@ export interface ButtonProps {
   dataTestId?: string;
 }
 
-// ─── Style Resolution ───────────────────────────────────────────────────────────
+// ─── State machine for button appearance ────────────────────────────────────────
+// Returns the CSS properties for each variant × interaction-state combination.
+// Uses solid token values only — no translucent backgrounds.
 
-function getButtonStyles(
+type InteractionState = 'default' | 'hover' | 'active';
+
+function getButtonTokens(
   btnType: Type,
+  state: InteractionState,
   disabled: boolean,
   forceTheme?: ThemeMode
-): { background: string; color: string; border: string; shadow: string } {
+): { background: string; color: string; border: string; boxShadow: string } {
   const v = (cssVar: string) => getThemedColor(`var(${cssVar})`, forceTheme);
 
   if (disabled) {
+    const disabledBg = btnType === Type.PRIMARY
+      ? v('--hsn-cta-primary-disabled')
+      : 'transparent';
     return {
-      background: v('--hsn-cta-primary-disabled'),
+      background: disabledBg,
       color: v('--hsn-text-disabled'),
-      border: 'none',
-      shadow: 'none',
+      border: btnType === Type.SECONDARY ? `1px solid ${v('--hsn-border-secondary')}` : 'none',
+      boxShadow: 'none',
     };
   }
 
   switch (btnType) {
-    case Type.PRIMARY:
+    case Type.PRIMARY: {
+      const bgMap: Record<InteractionState, string> = {
+        default: v('--hsn-cta-primary-default'),
+        hover: v('--hsn-cta-primary-hover'),
+        active: v('--hsn-cta-primary-active'),
+      };
       return {
-        background: v('--hsn-cta-primary-default'),
+        background: bgMap[state],
         color: v('--hsn-text-always-white'),
         border: 'none',
-        shadow: 'none',
+        boxShadow: state === 'hover'
+          ? v('--hsn-primary-button-hover-shadow')
+          : '0 1px 0 rgba(255,255,255,0.14) inset',
       };
-    case Type.SECONDARY:
+    }
+
+    case Type.SECONDARY: {
+      const bgMap: Record<InteractionState, string> = {
+        default: v('--hsn-cta-secondary-default'),
+        hover: v('--hsn-cta-secondary-hover'),
+        active: v('--hsn-cta-secondary-active'),
+      };
       return {
-        background: v('--hsn-cta-secondary-default'),
+        background: bgMap[state],
         color: v('--hsn-text-primary'),
-        border: `1px solid ${v('--hsn-border-secondary')}`,
-        shadow: v('--hsn-shadow-secondary-button'),
+        border: `1px solid ${v('--hsn-border-primary')}`,
+        boxShadow: v('--hsn-shadow-secondary-button'),
       };
-    case Type.TERTIARY:
+    }
+
+    case Type.TERTIARY: {
+      const bgMap: Record<InteractionState, string> = {
+        default: v('--hsn-cta-tertiary-default'),
+        hover: v('--hsn-cta-tertiary-hover'),
+        active: v('--hsn-cta-tertiary-active'),
+      };
       return {
-        background: v('--hsn-cta-tertiary-default'),
+        background: bgMap[state],
         color: v('--hsn-text-secondary'),
         border: 'none',
-        shadow: 'none',
+        boxShadow: 'none',
       };
-    case Type.DESTRUCTIVE:
+    }
+
+    case Type.DESTRUCTIVE: {
+      const bgMap: Record<InteractionState, string> = {
+        default: v('--hsn-cta-destructive-default'),
+        hover: v('--hsn-cta-destructive-hover'),
+        active: v('--hsn-cta-destructive-active'),
+      };
       return {
-        background: v('--hsn-cta-destructive-default'),
+        background: bgMap[state],
         color: v('--hsn-text-destructive'),
         border: `1px solid ${v('--hsn-border-destructive')}`,
-        shadow: v('--hsn-shadow-destructive-button'),
+        boxShadow: state === 'default' ? v('--hsn-shadow-destructive-button') : 'none',
       };
+    }
   }
 }
 
@@ -78,6 +115,12 @@ const FONT_SIZE_MAP: Record<string, string> = {
   [Size.SMALL]: '0.75rem',
   [Size.MEDIUM]: '0.8125rem',
   [Size.LARGE]: '0.875rem',
+};
+
+const PADDING_MAP: Record<string, string> = {
+  [Size.SMALL]: '0 12px',
+  [Size.MEDIUM]: '0 16px',
+  [Size.LARGE]: '0 20px',
 };
 
 // ─── Component ──────────────────────────────────────────────────────────────────
@@ -101,38 +144,42 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
+    const [interactionState, setInteractionState] = useState<InteractionState>('default');
+
     const isDisabled = disabled || loading;
-    const styleSet = getButtonStyles(type, isDisabled, forceTheme);
+    const effectiveState = isDisabled ? 'default' : interactionState;
+    const tokens = getButtonTokens(type, effectiveState, isDisabled, forceTheme);
     const height = sizeHeight[size as keyof typeof sizeHeight] ?? sizeHeight.medium;
 
     const computedStyle: CSSProperties = {
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: '8px',
+      gap: '6px',
       height: `${height}px`,
-      padding: '0 16px',
+      padding: PADDING_MAP[size] ?? '0 16px',
       fontSize: FONT_SIZE_MAP[size] ?? '0.8125rem',
       fontWeight: 600,
       fontFamily: FONT_FAMILY_SANS,
       lineHeight: '1',
-      letterSpacing: '-0.015em',
-      borderRadius: radii.md,
+      letterSpacing: '-0.01em',
+      // Consistent radius — smaller than the default to feel enterprise/precise
+      borderRadius: size === Size.SMALL ? radii.sm : radii.sm,
       cursor: isDisabled ? 'not-allowed' : 'pointer',
-      opacity: isDisabled ? 0.6 : 1,
-      transition: `transform ${transitions.normal} ${transitions.easing}, box-shadow ${transitions.normal} ${transitions.easing}, background ${transitions.normal} ${transitions.easing}, border-color ${transitions.normal} ${transitions.easing}`,
+      opacity: isDisabled ? 0.55 : 1,
+      transition: `background ${transitions.fast} ${transitions.easing}, box-shadow ${transitions.fast} ${transitions.easing}, border-color ${transitions.fast} ${transitions.easing}, transform ${transitions.fast} ${transitions.easing}`,
+      transform: interactionState === 'active' && !isDisabled ? 'translateY(1px)' : 'none',
       width: fullWidth ? '100%' : undefined,
-      background: styleSet.background,
-      color: styleSet.color,
-      border: styleSet.border,
-      boxShadow: styleSet.shadow !== 'none'
-        ? styleSet.shadow
-        : type === Type.PRIMARY
-          ? '0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(15, 23, 42, 0.06), 0 10px 28px -12px rgba(45, 184, 175, 0.35)'
-          : undefined,
+      background: tokens.background,
+      color: tokens.color,
+      border: tokens.border,
+      boxShadow: tokens.boxShadow,
+      // Focus is handled globally via :focus-visible in ThemeProvider CSS injection
       outline: 'none',
       whiteSpace: 'nowrap',
       userSelect: 'none',
+      position: 'relative',
+      overflow: 'hidden',
       ...style,
     };
 
@@ -144,10 +191,34 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={className}
         style={computedStyle}
         data-testid={dataTestId}
+        aria-disabled={isDisabled}
+        onMouseEnter={() => !isDisabled && setInteractionState('hover')}
+        onMouseLeave={() => setInteractionState('default')}
+        onMouseDown={() => !isDisabled && setInteractionState('active')}
+        onMouseUp={() => !isDisabled && setInteractionState('hover')}
       >
-        {startIcon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{startIcon}</span>}
-        {children}
-        {endIcon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{endIcon}</span>}
+        {loading && (
+          <span
+            style={{
+              display: 'inline-block',
+              width: '12px',
+              height: '12px',
+              border: '2px solid currentColor',
+              borderTopColor: 'transparent',
+              borderRadius: '50%',
+              animation: 'spin 0.6s linear infinite',
+              flexShrink: 0,
+            }}
+            aria-hidden="true"
+          />
+        )}
+        {!loading && startIcon && (
+          <span style={{ display: 'inline-flex', flexShrink: 0 }}>{startIcon}</span>
+        )}
+        <span>{children}</span>
+        {endIcon && (
+          <span style={{ display: 'inline-flex', flexShrink: 0 }}>{endIcon}</span>
+        )}
       </button>
     );
   }

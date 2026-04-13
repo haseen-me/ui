@@ -15,6 +15,9 @@ export const MODAL_AND_DROPDOWN_SELECTOR = `.${MODAL_CLASSNAME}, .${DROPDOWN_CAL
 // ─── Types ──────────────────────────────────────────────────────────────────────
 
 export type SurfaceLevel = 'l0' | 'l1' | 'l2' | 'l3';
+
+// 'glass' variant is kept for API compatibility but maps to the solid token —
+// there is no glassmorphism in the Privacy-First Enterprise theme.
 export type SurfaceVariant = 'solid' | 'glass';
 
 export interface SurfaceProps {
@@ -30,21 +33,25 @@ export interface SurfaceProps {
   id?: string;
 }
 
-// ─── Component ──────────────────────────────────────────────────────────────────
+// ─── Shadow map — only for floating overlays ─────────────────────────────────────
+// Structural panes use borders for separation; shadows are reserved for
+// elements that float above the document (dropdowns, dialogs, tooltips).
 
-const SHADOW_MAP: Record<number, string> = {
-  0: 'var(--hsn-shadow-l1)',
-  1: 'var(--hsn-shadow-l1)',
-  2: 'var(--hsn-shadow-l2)',
-  3: 'var(--hsn-shadow-l3)',
+const SHADOW_MAP: Record<string, string> = {
+  l0: 'none',
+  l1: 'var(--hsn-shadow-l1)',
+  l2: 'var(--hsn-shadow-l2)',
+  l3: 'var(--hsn-shadow-l3)',
 };
+
+// ─── Component ──────────────────────────────────────────────────────────────────
 
 const Surface = forwardRef<HTMLDivElement, SurfaceProps>(
   (
     {
       children,
       level = 'l2',
-      variant = 'solid',
+      variant: _variant = 'solid',
       rounded = true,
       shadow = true,
       padding,
@@ -55,16 +62,18 @@ const Surface = forwardRef<HTMLDivElement, SurfaceProps>(
     },
     ref
   ) => {
-    const levelNum = parseInt(level[1]);
-    const bgVar = `var(--hsn-bg-${level}-${variant})`;
-    const shadowValue = shadow ? SHADOW_MAP[levelNum] : undefined;
+    // Both 'solid' and 'glass' resolve to the solid token.
+    // The --hsn-bg-*-glass vars are aliased to solid values in theme.ts,
+    // so no backdropFilter is ever applied.
+    const bgVar = `var(--hsn-bg-${level}-solid)`;
+    const shadowValue = shadow ? SHADOW_MAP[level] : 'none';
 
     const computedStyle: CSSProperties = {
       background: bgVar,
-      borderRadius: rounded ? radii.xl : undefined,
-      border: '1px solid var(--hsn-border-secondary)',
-      backdropFilter: variant === 'glass' ? 'blur(14px) saturate(125%)' : undefined,
-      boxShadow: shadowValue,
+      borderRadius: rounded ? radii.lg : undefined,
+      border: '1px solid var(--hsn-border-primary)',
+      // backdropFilter intentionally omitted — zero glassmorphism
+      boxShadow: shadowValue !== 'none' ? shadowValue : undefined,
       padding: typeof padding === 'number' ? `${padding}px` : padding,
       position: 'relative',
       overflow: 'hidden',

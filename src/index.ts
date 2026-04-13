@@ -43,6 +43,23 @@ export type { MouseClickEvents, RequireAtLeastOne, RequireOnlyOne } from './type
 export { FONT_FAMILY_MONO, FONT_FAMILY_SANS, SIZE_HEIGHT } from './constants';
 
 // ─── Components ─────────────────────────────────────────────────────────────────
+export {
+  AppShell,
+  AppShellHeader,
+  AppShellSidebar,
+  AppShellMain,
+  AppShellDetailPane,
+  AppShellToolbar,
+} from './components/AppShell';
+export type {
+  AppShellProps,
+  AppShellHeaderProps,
+  AppShellSidebarProps,
+  AppShellMainProps,
+  AppShellDetailPaneProps,
+  AppShellToolbarProps,
+} from './components/AppShell';
+
 export { Avatar, getAvatarIconOrLabel } from './components/Avatar';
 export type { AvatarProps } from './components/Avatar';
 
