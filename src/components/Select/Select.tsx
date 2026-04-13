@@ -1,5 +1,6 @@
 import React, { CSSProperties, useRef, useState } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { transitions } from '../../tokens';
 
 export interface SelectOption<T = string> {
@@ -47,7 +48,7 @@ function Select<T = string>({
     background: 'var(--hsn-bg-field-default)',
     border: '1px solid var(--hsn-border-secondary)',
     fontSize: '0.8125rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: selected ? 'var(--hsn-text-primary)' : 'var(--hsn-text-tertiary)',
     cursor: disabled ? 'not-allowed' : 'pointer',
     opacity: disabled ? 0.6 : 1,
@@ -82,7 +83,7 @@ function Select<T = string>({
     padding: '6px 8px',
     borderRadius: '6px',
     fontSize: '0.8125rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: isDisabled ? 'var(--hsn-text-disabled)' : 'var(--hsn-text-primary)',
     background: isSelected ? 'var(--hsn-bg-cell-active)' : 'transparent',
     cursor: isDisabled ? 'not-allowed' : 'pointer',

@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../../constants';
+
 export interface SubTextProps {
   children: React.ReactNode;
   error?: boolean;
@@ -11,7 +13,7 @@ const SubText: React.FC<SubTextProps> = ({ children, error = false, className, s
   const computedStyle: CSSProperties = {
     fontSize: '0.6875rem',
     lineHeight: '1.36',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: error ? 'var(--hsn-text-destructive)' : 'var(--hsn-text-tertiary)',
     marginTop: '4px',
     ...style,

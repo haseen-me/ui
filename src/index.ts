@@ -40,7 +40,7 @@ export {
 export type { MouseClickEvents, RequireAtLeastOne, RequireOnlyOne } from './types';
 
 // ─── Constants ──────────────────────────────────────────────────────────────────
-export { SIZE_HEIGHT } from './constants';
+export { FONT_FAMILY_MONO, FONT_FAMILY_SANS, SIZE_HEIGHT } from './constants';
 
 // ─── Components ─────────────────────────────────────────────────────────────────
 export { Avatar, getAvatarIconOrLabel } from './components/Avatar';

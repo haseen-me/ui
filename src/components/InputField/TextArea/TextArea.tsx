@@ -1,5 +1,6 @@
 import React, { CSSProperties, forwardRef } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../../constants';
 import { transitions } from '../../../tokens';
 
 export interface TextAreaProps {
@@ -66,7 +67,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       outline: 'none',
       background: 'transparent',
       fontSize: '0.8125rem',
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      fontFamily: FONT_FAMILY_SANS,
       fontWeight: 400,
       color: 'var(--hsn-text-primary)',
       resize: 'vertical',

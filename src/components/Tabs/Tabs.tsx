@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { transitions } from '../../tokens';
 
 export enum TabsSize {
@@ -67,7 +68,7 @@ const Tabs: React.FC<TabsProps> = ({
     borderRadius: '6px',
     fontSize: FONT_SIZE_MAP[size],
     fontWeight: isActive ? 500 : 400,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: isActive ? 'var(--hsn-text-primary)' : 'var(--hsn-text-tertiary)',
     background: isActive ? 'var(--hsn-bg-l2-solid)' : 'transparent',
     boxShadow: isActive ? 'var(--hsn-shadow-l1)' : undefined,

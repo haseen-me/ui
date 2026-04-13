@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { transitions } from '../../tokens';
 
 export enum ChipSize {
@@ -45,7 +46,7 @@ const Chip: React.FC<ChipProps> = ({
     borderRadius: '9999px',
     fontSize: isSmall ? '0.6875rem' : '0.75rem',
     fontWeight: 500,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: active ? 'var(--hsn-accent-teal-primary)' : 'var(--hsn-text-secondary)',
     background: active ? 'var(--hsn-accent-teal-secondary)' : 'var(--hsn-cta-chip-default)',
     border: active ? 'none' : '1px solid var(--hsn-border-secondary)',

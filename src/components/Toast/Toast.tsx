@@ -1,5 +1,6 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { zIndex, transitions } from '../../tokens';
 
 export const TOAST_DEFAULT_DURATION = 4000;
@@ -59,7 +60,7 @@ const Toast: React.FC<ToastProps> = ({
     boxShadow: 'var(--hsn-shadow-l2)',
     fontSize: '0.8125rem',
     fontWeight: 400,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     lineHeight: '1.38',
     whiteSpace: 'nowrap',
     animation: `hsnSlideUp ${transitions.normal} ${transitions.easing}`,
@@ -74,7 +75,7 @@ const Toast: React.FC<ToastProps> = ({
     fontWeight: 500,
     cursor: 'pointer',
     padding: '0 4px',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
   };
 
   return (

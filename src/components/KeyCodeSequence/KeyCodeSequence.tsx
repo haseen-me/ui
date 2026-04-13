@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
+
 export interface KeyCodeSequenceProps {
   keys: string[];
   className?: string;
@@ -24,7 +26,7 @@ const KeyCodeSequence: React.FC<KeyCodeSequenceProps> = ({ keys, className, styl
     borderRadius: '4px',
     fontSize: '0.625rem',
     fontWeight: 500,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: 'var(--hsn-text-tertiary)',
     background: 'var(--hsn-bg-field-default)',
     border: '1px solid var(--hsn-border-tertiary)',

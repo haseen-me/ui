@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { Size } from '../../types';
 import { getLabelColor } from '../../utils/colorUtils';
 
@@ -65,7 +66,7 @@ const Avatar: React.FC<AvatarProps> = ({
     flexShrink: 0,
     fontSize,
     fontWeight: 600,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     background: imageSrc ? 'transparent' : bgColor,
     color: textColor,
     cursor: onClick ? 'pointer' : undefined,

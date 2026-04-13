@@ -1,6 +1,6 @@
 import React, { CSSProperties, forwardRef } from 'react';
 
-import { zIndex } from '../../tokens';
+import { radii, zIndex } from '../../tokens';
 
 // ─── Class Constants ────────────────────────────────────────────────────────────
 
@@ -61,9 +61,9 @@ const Surface = forwardRef<HTMLDivElement, SurfaceProps>(
 
     const computedStyle: CSSProperties = {
       background: bgVar,
-      borderRadius: rounded ? '22px' : undefined,
+      borderRadius: rounded ? radii.xl : undefined,
       border: '1px solid var(--hsn-border-secondary)',
-      backdropFilter: variant === 'glass' ? 'blur(18px) saturate(140%)' : undefined,
+      backdropFilter: variant === 'glass' ? 'blur(14px) saturate(125%)' : undefined,
       boxShadow: shadowValue,
       padding: typeof padding === 'number' ? `${padding}px` : padding,
       position: 'relative',

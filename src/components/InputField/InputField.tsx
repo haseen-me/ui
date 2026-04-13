@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { SubText } from './SubText';
 
 export interface InputFieldProps {
@@ -30,7 +31,7 @@ const InputField: React.FC<InputFieldProps> = ({
   const labelStyle: CSSProperties = {
     fontSize: '0.75rem',
     fontWeight: 500,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: 'var(--hsn-text-secondary)',
     marginBottom: '2px',
   };

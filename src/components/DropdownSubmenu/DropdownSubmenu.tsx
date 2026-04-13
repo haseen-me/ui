@@ -1,5 +1,6 @@
 import React, { CSSProperties, useRef, useState } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { transitions } from '../../tokens';
 
 export interface DropdownSubmenuProps {
@@ -27,7 +28,7 @@ const DropdownSubmenu: React.FC<DropdownSubmenuProps> = ({
     padding: '6px 8px',
     borderRadius: '6px',
     fontSize: '0.8125rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: 'var(--hsn-text-primary)',
     background: open ? 'var(--hsn-bg-cell-hover)' : 'transparent',
     cursor: 'pointer',

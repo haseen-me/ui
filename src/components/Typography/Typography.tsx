@@ -1,5 +1,6 @@
 import React, { CSSProperties, forwardRef, JSX } from 'react';
 
+import { FONT_FAMILY_MONO, FONT_FAMILY_SANS } from '../../constants';
 import { ThemeMode } from '../../theme/ThemeProvider';
 import { getThemedColor } from '../../utils/colorUtils';
 
@@ -114,14 +115,12 @@ const Typography = forwardRef<HTMLElement, TypographyProps>(
       fontSize: sizeSpec.fontSize,
       lineHeight: sizeSpec.lineHeight,
       fontWeight: weight,
-      fontFamily: mono
-        ? "'JetBrains Mono', 'SFMono-Regular', 'Fira Code', monospace"
-        : "'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      fontFamily: mono ? FONT_FAMILY_MONO : FONT_FAMILY_SANS,
       color: resolvedColor,
       textTransform: uppercase ? 'uppercase' : undefined,
       textAlign: align,
       userSelect: selectable ? undefined : 'none',
-      letterSpacing: uppercase ? '0.05em' : '-0.02em',
+      letterSpacing: uppercase ? '0.04em' : '-0.012em',
       margin: 0,
       padding: 0,
       ...overflowStyles,

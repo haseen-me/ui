@@ -1,5 +1,6 @@
 import React, { CSSProperties, useRef, useState, useEffect, useCallback } from 'react';
 
+import { FONT_FAMILY_MONO } from '../../constants';
 import { transitions } from '../../tokens';
 
 export enum CodeInputType {
@@ -106,7 +107,7 @@ const CodeInput: React.FC<CodeInputProps> = ({
     textAlign: 'center',
     fontSize: '1.25rem',
     fontWeight: 600,
-    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+    fontFamily: FONT_FAMILY_MONO,
     color: 'var(--hsn-text-primary)',
     background: 'var(--hsn-bg-field-default)',
     border: '1px solid var(--hsn-border-secondary)',

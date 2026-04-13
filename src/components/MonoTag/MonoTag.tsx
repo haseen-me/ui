@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_MONO } from '../../constants';
+
 export interface MonoTagProps {
   children: React.ReactNode;
   color?: string;
@@ -22,7 +24,7 @@ const MonoTag: React.FC<MonoTagProps> = ({
     borderRadius: '4px',
     fontSize: '0.6875rem',
     fontWeight: 500,
-    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+    fontFamily: FONT_FAMILY_MONO,
     color: color ?? 'var(--hsn-accent-teal-primary)',
     background: bgColor ?? 'var(--hsn-accent-teal-secondary)',
     whiteSpace: 'nowrap',

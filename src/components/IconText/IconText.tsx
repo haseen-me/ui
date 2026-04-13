@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
+
 export enum IconTextSize {
   SMALL = 'small',
   MEDIUM = 'medium',
@@ -41,7 +43,7 @@ const IconText: React.FC<IconTextProps> = ({
     gap: '6px',
     fontSize: FONT_SIZE_MAP[size],
     fontWeight: weight,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: color ?? 'var(--hsn-text-secondary)',
     cursor: onClick ? 'pointer' : undefined,
     userSelect: 'none',

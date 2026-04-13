@@ -1,5 +1,6 @@
 import React, { CSSProperties, forwardRef } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../../constants';
 import { sizeHeight, transitions } from '../../../tokens';
 import { Size } from '../../../types';
 
@@ -106,7 +107,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       outline: 'none',
       background: 'transparent',
       fontSize: FONT_SIZE_MAP[size],
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      fontFamily: FONT_FAMILY_SANS,
       fontWeight: 400,
       color: 'var(--hsn-text-primary)',
       padding: 0,

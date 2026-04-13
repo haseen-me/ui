@@ -1,5 +1,6 @@
 import React, { CSSProperties, useRef, useState } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { zIndex, transitions } from '../../tokens';
 
 export enum TooltipPlacement {
@@ -75,7 +76,7 @@ const Tooltip: React.FC<TooltipProps> = ({
     padding: '4px 8px',
     borderRadius: '6px',
     fontSize: '0.6875rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     fontWeight: 500,
     lineHeight: '1.36',
     whiteSpace: 'nowrap',

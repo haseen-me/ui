@@ -1,5 +1,6 @@
 import React, { CSSProperties, useEffect } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { zIndex, transitions } from '../../tokens';
 
 export enum DialogType {
@@ -74,7 +75,7 @@ const Dialog: React.FC<DialogProps> = ({
   const titleStyle: CSSProperties = {
     fontSize: '1rem',
     fontWeight: 600,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: 'var(--hsn-text-primary)',
     margin: 0,
     lineHeight: '1.4',
@@ -83,7 +84,7 @@ const Dialog: React.FC<DialogProps> = ({
   const descStyle: CSSProperties = {
     fontSize: '0.8125rem',
     fontWeight: 400,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     color: 'var(--hsn-text-secondary)',
     margin: 0,
     lineHeight: '1.5',

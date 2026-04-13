@@ -1,5 +1,6 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
 import { transitions } from '../../tokens';
 
 export enum DropdownItemColor {
@@ -41,7 +42,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
     padding: '6px 8px',
     borderRadius: '6px',
     fontSize: '0.8125rem',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     fontWeight: 400,
     color: isDestructive ? 'var(--hsn-text-destructive)' : 'var(--hsn-text-primary)',
     background: active ? 'var(--hsn-bg-cell-active)' : 'transparent',

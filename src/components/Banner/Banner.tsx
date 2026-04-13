@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react';
 
+import { FONT_FAMILY_SANS } from '../../constants';
+
 export const BANNER_HEIGHT = 44;
 
 export interface BannerProps {
@@ -56,7 +58,7 @@ const Banner: React.FC<BannerProps> = ({
     color: scheme.text,
     fontSize: '0.8125rem',
     fontWeight: 400,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    fontFamily: FONT_FAMILY_SANS,
     lineHeight: '1.38',
     width: '100%',
     ...style,

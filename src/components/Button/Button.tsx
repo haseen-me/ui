@@ -1,6 +1,7 @@
 import React, { CSSProperties, forwardRef } from 'react';
 
-import { sizeHeight, transitions } from '../../tokens';
+import { FONT_FAMILY_SANS } from '../../constants';
+import { radii, sizeHeight, transitions } from '../../tokens';
 import { ThemeMode } from '../../theme/ThemeProvider';
 import { getThemedColor } from '../../utils/colorUtils';
 import { Size, Type } from '../../types';
@@ -110,13 +111,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       justifyContent: 'center',
       gap: '8px',
       height: `${height}px`,
-      padding: '0 18px',
+      padding: '0 16px',
       fontSize: FONT_SIZE_MAP[size] ?? '0.8125rem',
       fontWeight: 600,
-      fontFamily: "'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      fontFamily: FONT_FAMILY_SANS,
       lineHeight: '1',
-      letterSpacing: '-0.02em',
-      borderRadius: '14px',
+      letterSpacing: '-0.015em',
+      borderRadius: radii.md,
       cursor: isDisabled ? 'not-allowed' : 'pointer',
       opacity: isDisabled ? 0.6 : 1,
       transition: `transform ${transitions.normal} ${transitions.easing}, box-shadow ${transitions.normal} ${transitions.easing}, background ${transitions.normal} ${transitions.easing}, border-color ${transitions.normal} ${transitions.easing}`,
@@ -127,7 +128,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       boxShadow: styleSet.shadow !== 'none'
         ? styleSet.shadow
         : type === Type.PRIMARY
-          ? '0 18px 34px -22px rgba(45, 184, 175, 0.55)'
+          ? '0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(15, 23, 42, 0.06), 0 10px 28px -12px rgba(45, 184, 175, 0.35)'
           : undefined,
       outline: 'none',
       whiteSpace: 'nowrap',
