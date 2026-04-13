@@ -1,21 +1,17 @@
 /**
  * Haseen UI — Theme Definitions
  *
- * Light and dark theme token maps using CSS custom properties.
- * All semantic tokens resolve to palette primitives + opacities.
+ * Privacy-First Enterprise aesthetic:
+ * - Zero glassmorphism: no backdrop-blur, no translucent surfaces
+ * - Solid hex backgrounds only — builds visual trust and maximises legibility
+ * - Single accent point: brand teal (#2db8af) for CTAs, active states, focus rings
+ * - Monochromatic neutrals (slate/zinc scale) for structure
+ * - Minimal shadows — only for floating overlays (Dialog, Dropdown, Tooltip)
  */
 
-import { opacities, palette } from '../tokens';
+import { palette } from '../tokens';
 
-const o = opacities;
 const c = palette;
-
-const misc = {
-  '--hsn-primary-button-hover-shadow': '0 10px 28px rgba(15, 23, 42, 0.12)',
-  '--hsn-primary-button-hover-inset-shadow': 'inset 0 1px 0 rgba(255, 255, 255, 0.22)',
-  '--hsn-code-mark-color': `rgb(${c.teal500})`,
-  '--hsn-code-mark-bg': `rgba(${c.black}, ${o[8]})`,
-};
 
 export interface ThemeTokens {
   [key: string]: string;
@@ -26,6 +22,7 @@ export interface ThemeSet {
   dark: ThemeTokens;
 }
 
+// Primitive color vars — RGB triplets, available for rgba() composition in consumers
 const colorVars = {
   '--hsn-white': c.white,
   '--hsn-black': c.black,
@@ -105,219 +102,324 @@ const colorVars = {
 };
 
 const theme: ThemeSet = {
+  // ─────────────────────────────────────────────────────────────────────────────
+  // LIGHT MODE — crisp white/slate foundation
+  // ─────────────────────────────────────────────────────────────────────────────
   light: {
     ...colorVars,
-    ...misc,
+
+    // ── Focus ring — universal teal, keyboard navigation ──
+    '--hsn-focus-ring': `0 0 0 2px #ffffff, 0 0 0 4px rgb(${c.teal500})`,
+    '--hsn-focus-ring-color': `rgb(${c.teal500})`,
+    '--hsn-focus-ring-offset': '2px',
+
+    // ── Misc utility ──
+    '--hsn-code-mark-color': `rgb(${c.teal600})`,
+    '--hsn-code-mark-bg': `rgba(${c.black}, 0.06)`,
+
     // ── Text ──
-    '--hsn-text-primary': 'rgb(15, 23, 42)',
-    '--hsn-text-secondary': 'rgba(30, 41, 59, 0.72)',
-    '--hsn-text-tertiary': 'rgba(51, 65, 85, 0.55)',
-    '--hsn-text-disabled': `rgba(${c.black}, ${o[32]})`,
-    '--hsn-text-always-white': `rgb(${c.white})`,
-    '--hsn-text-always-black': `rgb(${c.black})`,
+    '--hsn-text-primary': '#0f172a',
+    '--hsn-text-secondary': '#475569',
+    '--hsn-text-tertiary': '#94a3b8',
+    '--hsn-text-disabled': '#cbd5e1',
+    '--hsn-text-always-white': '#ffffff',
+    '--hsn-text-always-black': '#000000',
     '--hsn-text-link': `rgb(${c.teal600})`,
     '--hsn-text-destructive': `rgb(${c.red600})`,
-    '--hsn-text-inverse': `rgb(${c.white})`,
+    '--hsn-text-inverse': '#ffffff',
+
     // ── Icon ──
-    '--hsn-icon-primary': `rgb(${c.grey900})`,
-    '--hsn-icon-secondary': `rgba(${c.black}, ${o[56]})`,
-    '--hsn-icon-tertiary': `rgba(${c.black}, ${o[42]})`,
-    '--hsn-icon-disabled': `rgba(${c.black}, ${o[32]})`,
-    '--hsn-icon-always-white': `rgb(${c.white})`,
-    '--hsn-icon-always-black': `rgb(${c.black})`,
+    '--hsn-icon-primary': '#0f172a',
+    '--hsn-icon-secondary': '#64748b',
+    '--hsn-icon-tertiary': '#94a3b8',
+    '--hsn-icon-disabled': '#cbd5e1',
+    '--hsn-icon-always-white': '#ffffff',
+    '--hsn-icon-always-black': '#000000',
     '--hsn-icon-link': `rgb(${c.teal600})`,
     '--hsn-icon-destructive': `rgb(${c.red600})`,
-    '--hsn-icon-inverse': `rgb(${c.white})`,
-    // ── CTA / Button ──
+    '--hsn-icon-inverse': '#ffffff',
+
+    // ── CTA / Button — solid states, no translucency ──
     '--hsn-cta-primary-default': `rgb(${c.teal500})`,
     '--hsn-cta-primary-hover': `rgb(${c.teal600})`,
     '--hsn-cta-primary-active': `rgb(${c.teal700})`,
-    '--hsn-cta-primary-disabled': `rgba(${c.teal500}, ${o[32]})`,
-    '--hsn-cta-secondary-default': 'rgba(255, 255, 255, 0.92)',
-    '--hsn-cta-secondary-hover': 'rgba(248, 250, 252, 0.98)',
-    '--hsn-cta-secondary-active': 'rgba(241, 245, 249, 1)',
-    '--hsn-cta-secondary-disabled': 'transparent',
+    '--hsn-cta-primary-disabled': '#b2e4e1',
+
+    // Secondary: solid white with a visible border
+    '--hsn-cta-secondary-default': '#ffffff',
+    '--hsn-cta-secondary-hover': '#f8fafc',
+    '--hsn-cta-secondary-active': '#f1f5f9',
+    '--hsn-cta-secondary-disabled': '#f8fafc',
+
+    // Tertiary/ghost: transparent with subtle solid hover
     '--hsn-cta-tertiary-default': 'transparent',
-    '--hsn-cta-tertiary-hover': `rgba(${c.black}, ${o[8]})`,
-    '--hsn-cta-tertiary-active': `rgba(${c.black}, ${o[10]})`,
+    '--hsn-cta-tertiary-hover': '#f1f5f9',
+    '--hsn-cta-tertiary-active': '#e2e8f0',
     '--hsn-cta-tertiary-disabled': 'transparent',
+
+    // Destructive: transparent base with solid error hover
     '--hsn-cta-destructive-default': 'transparent',
-    '--hsn-cta-destructive-hover': `rgba(${c.red600}, ${o[8]})`,
-    '--hsn-cta-destructive-active': `rgba(${c.red600}, ${o[12]})`,
+    '--hsn-cta-destructive-hover': '#fef2f2',
+    '--hsn-cta-destructive-active': '#fee2e2',
     '--hsn-cta-destructive-disabled': 'transparent',
+
+    // Chip / Navigation
     '--hsn-cta-chip-default': 'transparent',
-    '--hsn-cta-chip-hover': `rgba(${c.black}, ${o[6]})`,
+    '--hsn-cta-chip-hover': '#f1f5f9',
     '--hsn-cta-navigation-default': 'transparent',
-    '--hsn-cta-navigation-hover': `rgba(${c.black}, ${o[6]})`,
-    '--hsn-cta-navigation-active': `rgba(${c.black}, ${o[12]})`,
+    '--hsn-cta-navigation-hover': '#f1f5f9',
+    '--hsn-cta-navigation-active': '#e2e8f0',
+    '--hsn-cta-navigation-active-accent': `rgba(${c.teal500}, 0.10)`,
     '--hsn-cta-navigation-disabled': 'transparent',
-    // ── Border ──
-    '--hsn-border-primary': 'rgba(15, 23, 42, 0.09)',
-    '--hsn-border-secondary': 'rgba(15, 23, 42, 0.06)',
-    '--hsn-border-tertiary': 'rgba(148, 163, 184, 0.1)',
-    '--hsn-border-hover': 'rgba(45, 184, 175, 0.35)',
+
+    // ── Border — crisp 1px strokes, no multi-opacity blur ──
+    '--hsn-border-primary': '#e2e8f0',
+    '--hsn-border-secondary': '#f1f5f9',
+    '--hsn-border-tertiary': '#e2e8f0',
+    '--hsn-border-hover': `rgb(${c.teal500})`,
     '--hsn-border-active': `rgb(${c.teal500})`,
-    '--hsn-border-destructive': `rgba(${c.red600}, ${o[12]})`,
-    // ── Background ──
-    '--hsn-bg-main-container':
-      'radial-gradient(1100px 520px at 0% -8%, rgba(45, 184, 175, 0.05), transparent 52%), radial-gradient(900px 480px at 100% 0%, rgba(100, 116, 139, 0.05), transparent 48%), linear-gradient(180deg, #fafbfc 0%, #f1f4f8 100%)',
-    '--hsn-bg-sidepanel': 'linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96))',
-    '--hsn-bg-l0-solid': 'linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(248, 250, 252, 0.97))',
-    '--hsn-bg-l0-glass': 'rgba(255, 255, 255, 0.74)',
-    '--hsn-bg-l1-solid': 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
-    '--hsn-bg-l1-glass': 'rgba(255, 255, 255, 0.8)',
-    '--hsn-bg-l2-solid': 'linear-gradient(180deg, #ffffff 0%, #fafbfc 100%)',
-    '--hsn-bg-l2-glass': 'rgba(255, 255, 255, 0.84)',
+    '--hsn-border-destructive': `rgb(${c.red300})`,
+    '--hsn-border-input': '#cbd5e1',
+    '--hsn-border-input-hover': '#94a3b8',
+    '--hsn-border-input-focus': `rgb(${c.teal500})`,
+    '--hsn-border-input-error': `rgb(${c.red500})`,
+
+    // ── Background — all solid, zero translucency ──
+    // App shell layers
+    '--hsn-bg-app': '#f8fafc',
+    '--hsn-bg-main-container': '#f8fafc',
+    '--hsn-bg-sidepanel': '#f1f5f9',
+    '--hsn-bg-header': '#ffffff',
+
+    // Surface elevation layers — solid hex values only
+    '--hsn-bg-l0-solid': '#f8fafc',
+    '--hsn-bg-l1-solid': '#ffffff',
+    '--hsn-bg-l2-solid': '#ffffff',
     '--hsn-bg-l3-solid': '#ffffff',
-    '--hsn-bg-l3-glass': 'rgba(255, 255, 255, 0.9)',
-    '--hsn-bg-emphasis': `rgb(${c.grey900})`,
-    '--hsn-bg-scrim': 'rgba(15, 23, 42, 0.45)',
-    '--hsn-bg-cell-hover': 'rgba(15, 23, 42, 0.05)',
-    '--hsn-bg-cell-active': 'rgba(15, 23, 42, 0.08)',
-    '--hsn-bg-field-default': 'rgba(248, 250, 252, 0.96)',
-    '--hsn-bg-field-hover': '#ffffff',
-    // ── Overlay ──
-    '--hsn-bg-overlay-primary': `rgba(${c.black}, ${o[10]})`,
-    '--hsn-bg-overlay-secondary': `rgba(${c.black}, ${o[8]})`,
-    '--hsn-bg-overlay-tertiary': `rgba(${c.black}, ${o[4]})`,
-    '--hsn-bg-overlay-destructive': `rgba(${c.red400}, ${o[24]})`,
-    // ── Accent ──
+
+    // Glass variants are aliased to their solid equivalents — no translucency
+    '--hsn-bg-l0-glass': '#f8fafc',
+    '--hsn-bg-l1-glass': '#ffffff',
+    '--hsn-bg-l2-glass': '#ffffff',
+    '--hsn-bg-l3-glass': '#ffffff',
+
+    '--hsn-bg-emphasis': '#0f172a',
+    '--hsn-bg-scrim': 'rgba(15, 23, 42, 0.55)',
+
+    // Row / cell interaction states
+    '--hsn-bg-cell-hover': '#f8fafc',
+    '--hsn-bg-cell-active': '#f1f5f9',
+    '--hsn-bg-cell-selected': `rgba(${c.teal500}, 0.08)`,
+    '--hsn-bg-cell-unread': '#ffffff',
+
+    // Form fields — solid, no translucency
+    '--hsn-bg-field-default': '#ffffff',
+    '--hsn-bg-field-hover': '#f8fafc',
+    '--hsn-bg-field-disabled': '#f8fafc',
+    '--hsn-bg-field-error': '#fff5f5',
+
+    // ── Overlay — solid tinted backgrounds ──
+    '--hsn-bg-overlay-primary': 'rgba(15, 23, 42, 0.08)',
+    '--hsn-bg-overlay-secondary': 'rgba(15, 23, 42, 0.05)',
+    '--hsn-bg-overlay-tertiary': 'rgba(15, 23, 42, 0.03)',
+    '--hsn-bg-overlay-destructive': '#fff5f5',
+
+    // ── Accent — teal only as the single brand accent ──
     '--hsn-accent-teal-primary': `rgb(${c.teal600})`,
-    '--hsn-accent-teal-secondary': `rgba(${c.teal400}, ${o[36]})`,
+    '--hsn-accent-teal-secondary': `rgba(${c.teal500}, 0.12)`,
+
+    // Status/semantic accents kept for functional use (tags, badges, status indicators)
     '--hsn-accent-green-primary': `rgb(${c.green600})`,
-    '--hsn-accent-green-secondary': `rgba(${c.green400}, ${o[28]})`,
+    '--hsn-accent-green-secondary': '#dcfce7',
     '--hsn-accent-orange-primary': `rgb(${c.orange600})`,
-    '--hsn-accent-orange-secondary': `rgba(${c.orange400}, ${o[36]})`,
+    '--hsn-accent-orange-secondary': '#ffedd5',
     '--hsn-accent-pink-primary': `rgb(${c.pink600})`,
-    '--hsn-accent-pink-secondary': `rgba(${c.pink400}, ${o[36]})`,
+    '--hsn-accent-pink-secondary': '#fce7f3',
     '--hsn-accent-yellow-primary': `rgb(${c.yellow600})`,
-    '--hsn-accent-yellow-secondary': `rgba(${c.yellow400}, ${o[48]})`,
+    '--hsn-accent-yellow-secondary': '#fef9c3',
     '--hsn-accent-blue-primary': `rgb(${c.blue600})`,
-    '--hsn-accent-blue-secondary': `rgba(${c.blue400}, ${o[36]})`,
+    '--hsn-accent-blue-secondary': '#dbeafe',
     '--hsn-accent-red-primary': `rgb(${c.red600})`,
-    '--hsn-accent-red-secondary': `rgba(${c.red400}, ${o[36]})`,
+    '--hsn-accent-red-secondary': '#fee2e2',
     '--hsn-accent-indigo-primary': `rgb(${c.indigo600})`,
-    '--hsn-accent-indigo-secondary': `rgba(${c.indigo400}, ${o[36]})`,
-    // ── Shadows ──
-    '--hsn-shadow-l1': '0 1px 0 rgba(15, 23, 42, 0.04), 0 12px 32px -20px rgba(15, 23, 42, 0.14)',
-    '--hsn-shadow-l2': '0 1px 0 rgba(15, 23, 42, 0.05), 0 20px 44px -24px rgba(15, 23, 42, 0.18)',
-    '--hsn-shadow-l3': '0 1px 0 rgba(15, 23, 42, 0.06), 0 28px 64px -28px rgba(15, 23, 42, 0.22)',
-    '--hsn-shadow-inset': 'inset 0 1px 0 rgba(255, 255, 255, 0.85)',
-    '--hsn-shadow-secondary-button': '0 1px 0 rgba(15, 23, 42, 0.04), 0 8px 20px -14px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
-    '--hsn-shadow-destructive-button': 'inset 0px -1px 0px 1px rgba(220, 38, 38, 0.2), inset 0px 1px 0px rgba(220, 38, 38, 0.2)',
-    '--hsn-shadow-dropdown': 'rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 2px 0 inset',
-    '--hsn-shadow-drawer': '0px 0px 40px rgba(0, 0, 0, 0.1)',
+    '--hsn-accent-indigo-secondary': '#e0e7ff',
+
+    // ── Shadows — only for floating overlays, not structural panes ──
+    // Structural borders handle separation; shadows reserved for overlays
+    '--hsn-shadow-l1': '0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04)',
+    '--hsn-shadow-l2': '0 4px 12px rgba(15, 23, 42, 0.10), 0 2px 4px rgba(15, 23, 42, 0.06)',
+    '--hsn-shadow-l3': '0 12px 32px rgba(15, 23, 42, 0.14), 0 4px 8px rgba(15, 23, 42, 0.08)',
+    '--hsn-shadow-inset': 'inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+    '--hsn-shadow-secondary-button': '0 1px 2px rgba(15, 23, 42, 0.06)',
+    '--hsn-shadow-destructive-button': 'inset 0 0 0 1px rgba(220, 38, 38, 0.25)',
+    '--hsn-shadow-dropdown': '0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.08)',
+    '--hsn-shadow-drawer': '4px 0 24px rgba(15, 23, 42, 0.10)',
+    '--hsn-shadow-dialog': '0 20px 60px rgba(15, 23, 42, 0.18), 0 8px 20px rgba(15, 23, 42, 0.10)',
+
+    // Primary button hover shadow — teal glow, not spread
+    '--hsn-primary-button-hover-shadow': `0 4px 14px rgba(${c.teal500}, 0.28)`,
+    '--hsn-primary-button-hover-inset-shadow': 'none',
+
     // ── Misc ──
-    '--hsn-bg-cell-unread': `rgb(${c.white})`,
-    '--hsn-status-bar-color': `linear-gradient(0deg, rgba(${c.black}, ${o[2]}), rgba(${c.black}, ${o[2]})), rgb(${c.white})`,
-    '--hsn-illustration-fill': `rgb(${c.grey100})`,
+    '--hsn-status-bar-color': '#ffffff',
+    '--hsn-illustration-fill': '#f1f5f9',
+    '--hsn-divider': '#e2e8f0',
+    '--hsn-scrollbar-thumb': '#cbd5e1',
+    '--hsn-scrollbar-track': '#f1f5f9',
   },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // DARK MODE — deep slate foundation, not pure black
+  // ─────────────────────────────────────────────────────────────────────────────
   dark: {
     ...colorVars,
-    ...misc,
+
+    // ── Focus ring — same teal, white inner offset for contrast on dark ──
+    '--hsn-focus-ring': `0 0 0 2px #1e293b, 0 0 0 4px rgb(${c.teal400})`,
+    '--hsn-focus-ring-color': `rgb(${c.teal400})`,
+    '--hsn-focus-ring-offset': '2px',
+
+    // ── Misc utility ──
+    '--hsn-code-mark-color': `rgb(${c.teal400})`,
+    '--hsn-code-mark-bg': 'rgba(255, 255, 255, 0.06)',
+
     // ── Text ──
-    '--hsn-text-primary': 'rgb(241, 245, 249)',
-    '--hsn-text-secondary': 'rgba(226, 232, 240, 0.78)',
-    '--hsn-text-tertiary': 'rgba(148, 163, 184, 0.65)',
-    '--hsn-text-disabled': `rgba(${c.white}, ${o[28]})`,
-    '--hsn-text-always-white': `rgb(${c.white})`,
-    '--hsn-text-always-black': `rgb(${c.black})`,
+    '--hsn-text-primary': '#f1f5f9',
+    '--hsn-text-secondary': '#94a3b8',
+    '--hsn-text-tertiary': '#64748b',
+    '--hsn-text-disabled': '#334155',
+    '--hsn-text-always-white': '#ffffff',
+    '--hsn-text-always-black': '#000000',
     '--hsn-text-link': `rgb(${c.teal400})`,
     '--hsn-text-destructive': `rgb(${c.red400})`,
-    '--hsn-text-inverse': `rgb(${c.black})`,
+    '--hsn-text-inverse': '#0f172a',
+
     // ── Icon ──
-    '--hsn-icon-primary': `rgb(${c.white})`,
-    '--hsn-icon-secondary': `rgba(${c.white}, ${o[54]})`,
-    '--hsn-icon-tertiary': `rgba(${c.white}, ${o[42]})`,
-    '--hsn-icon-disabled': `rgba(${c.white}, ${o[28]})`,
-    '--hsn-icon-always-white': `rgb(${c.white})`,
-    '--hsn-icon-always-black': `rgb(${c.black})`,
+    '--hsn-icon-primary': '#e2e8f0',
+    '--hsn-icon-secondary': '#94a3b8',
+    '--hsn-icon-tertiary': '#64748b',
+    '--hsn-icon-disabled': '#334155',
+    '--hsn-icon-always-white': '#ffffff',
+    '--hsn-icon-always-black': '#000000',
     '--hsn-icon-link': `rgb(${c.teal400})`,
     '--hsn-icon-destructive': `rgb(${c.red400})`,
-    '--hsn-icon-inverse': `rgb(${c.black})`,
-    // ── CTA / Button ──
+    '--hsn-icon-inverse': '#0f172a',
+
+    // ── CTA / Button — solid dark surfaces ──
     '--hsn-cta-primary-default': `rgb(${c.teal500})`,
     '--hsn-cta-primary-hover': `rgb(${c.teal400})`,
     '--hsn-cta-primary-active': `rgb(${c.teal600})`,
-    '--hsn-cta-primary-disabled': `rgba(${c.teal500}, ${o[32]})`,
-    '--hsn-cta-secondary-default': 'rgba(30, 41, 59, 0.55)',
-    '--hsn-cta-secondary-hover': 'rgba(51, 65, 85, 0.65)',
-    '--hsn-cta-secondary-active': 'rgba(71, 85, 105, 0.78)',
-    '--hsn-cta-secondary-disabled': 'transparent',
+    '--hsn-cta-primary-disabled': '#1a3a38',
+
+    '--hsn-cta-secondary-default': '#1e293b',
+    '--hsn-cta-secondary-hover': '#293548',
+    '--hsn-cta-secondary-active': '#334155',
+    '--hsn-cta-secondary-disabled': '#1e293b',
+
     '--hsn-cta-tertiary-default': 'transparent',
-    '--hsn-cta-tertiary-hover': `rgba(${c.white}, ${o[8]})`,
-    '--hsn-cta-tertiary-active': `rgba(${c.white}, ${o[10]})`,
+    '--hsn-cta-tertiary-hover': '#1e293b',
+    '--hsn-cta-tertiary-active': '#293548',
     '--hsn-cta-tertiary-disabled': 'transparent',
-    '--hsn-cta-destructive-default': `rgba(${c.white}, ${o[4]})`,
-    '--hsn-cta-destructive-hover': `rgba(${c.red400}, ${o[12]})`,
-    '--hsn-cta-destructive-active': `rgba(${c.red400}, ${o[16]})`,
+
+    '--hsn-cta-destructive-default': 'transparent',
+    '--hsn-cta-destructive-hover': '#2d1515',
+    '--hsn-cta-destructive-active': '#3b1919',
     '--hsn-cta-destructive-disabled': 'transparent',
+
     '--hsn-cta-chip-default': 'transparent',
-    '--hsn-cta-chip-hover': `rgba(${c.white}, ${o[8]})`,
+    '--hsn-cta-chip-hover': '#1e293b',
     '--hsn-cta-navigation-default': 'transparent',
-    '--hsn-cta-navigation-hover': `rgba(${c.white}, ${o[8]})`,
-    '--hsn-cta-navigation-active': `rgba(${c.white}, ${o[12]})`,
+    '--hsn-cta-navigation-hover': '#1e293b',
+    '--hsn-cta-navigation-active': '#293548',
+    '--hsn-cta-navigation-active-accent': `rgba(${c.teal500}, 0.14)`,
     '--hsn-cta-navigation-disabled': 'transparent',
-    // ── Border ──
-    '--hsn-border-primary': 'rgba(148, 163, 184, 0.16)',
-    '--hsn-border-secondary': 'rgba(148, 163, 184, 0.1)',
-    '--hsn-border-tertiary': 'rgba(255, 255, 255, 0.05)',
-    '--hsn-border-hover': 'rgba(45, 184, 175, 0.42)',
+
+    // ── Border — distinct 1px strokes on dark ──
+    '--hsn-border-primary': '#1e293b',
+    '--hsn-border-secondary': '#162032',
+    '--hsn-border-tertiary': '#1e293b',
+    '--hsn-border-hover': `rgb(${c.teal500})`,
     '--hsn-border-active': `rgb(${c.teal400})`,
-    '--hsn-border-destructive': `rgba(${c.red400}, ${o[12]})`,
-    // ── Background ──
-    '--hsn-bg-main-container':
-      'radial-gradient(1000px 480px at 0% -10%, rgba(45, 184, 175, 0.08), transparent 50%), radial-gradient(820px 420px at 100% 0%, rgba(71, 85, 105, 0.12), transparent 48%), linear-gradient(180deg, #020617 0%, #0b1220 45%, #0f172a 100%)',
-    '--hsn-bg-sidepanel': 'linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.92))',
-    '--hsn-bg-l0-solid': 'linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.94))',
-    '--hsn-bg-l0-glass': 'rgba(15, 23, 42, 0.68)',
-    '--hsn-bg-l1-solid': 'linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.96))',
-    '--hsn-bg-l1-glass': 'rgba(30, 41, 59, 0.74)',
-    '--hsn-bg-l2-solid': 'linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98))',
-    '--hsn-bg-l2-glass': 'rgba(30, 41, 59, 0.78)',
-    '--hsn-bg-l3-solid': 'linear-gradient(180deg, rgba(51, 65, 85, 0.98), rgba(30, 41, 59, 0.99))',
-    '--hsn-bg-l3-glass': 'rgba(51, 65, 85, 0.82)',
-    '--hsn-bg-emphasis': 'rgb(30, 41, 59)',
-    '--hsn-bg-scrim': 'rgba(2, 6, 23, 0.72)',
-    '--hsn-bg-cell-hover': 'rgba(148, 163, 184, 0.1)',
-    '--hsn-bg-cell-active': 'rgba(148, 163, 184, 0.14)',
-    '--hsn-bg-field-default': 'rgba(15, 23, 42, 0.88)',
-    '--hsn-bg-field-hover': 'rgba(30, 41, 59, 0.92)',
-    // ── Overlay ──
-    '--hsn-bg-overlay-primary': `rgba(${c.white}, ${o[10]})`,
-    '--hsn-bg-overlay-secondary': `rgba(${c.white}, ${o[8]})`,
-    '--hsn-bg-overlay-tertiary': `rgba(${c.white}, ${o[4]})`,
-    '--hsn-bg-overlay-destructive': `rgba(${c.red400}, ${o[24]})`,
+    '--hsn-border-destructive': `rgb(${c.red800})`,
+    '--hsn-border-input': '#334155',
+    '--hsn-border-input-hover': '#475569',
+    '--hsn-border-input-focus': `rgb(${c.teal400})`,
+    '--hsn-border-input-error': `rgb(${c.red500})`,
+
+    // ── Background — all solid, no translucency ──
+    '--hsn-bg-app': '#0b1120',
+    '--hsn-bg-main-container': '#0b1120',
+    '--hsn-bg-sidepanel': '#0f172a',
+    '--hsn-bg-header': '#0f172a',
+
+    '--hsn-bg-l0-solid': '#0b1120',
+    '--hsn-bg-l1-solid': '#0f172a',
+    '--hsn-bg-l2-solid': '#1e293b',
+    '--hsn-bg-l3-solid': '#293548',
+
+    // Glass variants aliased to solid — no backdrop-blur
+    '--hsn-bg-l0-glass': '#0b1120',
+    '--hsn-bg-l1-glass': '#0f172a',
+    '--hsn-bg-l2-glass': '#1e293b',
+    '--hsn-bg-l3-glass': '#293548',
+
+    '--hsn-bg-emphasis': '#e2e8f0',
+    '--hsn-bg-scrim': 'rgba(2, 6, 23, 0.75)',
+
+    '--hsn-bg-cell-hover': '#162032',
+    '--hsn-bg-cell-active': '#1e293b',
+    '--hsn-bg-cell-selected': `rgba(${c.teal500}, 0.10)`,
+    '--hsn-bg-cell-unread': '#162032',
+
+    '--hsn-bg-field-default': '#1e293b',
+    '--hsn-bg-field-hover': '#293548',
+    '--hsn-bg-field-disabled': '#162032',
+    '--hsn-bg-field-error': '#2d1515',
+
+    '--hsn-bg-overlay-primary': 'rgba(255, 255, 255, 0.06)',
+    '--hsn-bg-overlay-secondary': 'rgba(255, 255, 255, 0.04)',
+    '--hsn-bg-overlay-tertiary': 'rgba(255, 255, 255, 0.02)',
+    '--hsn-bg-overlay-destructive': '#2d1515',
+
     // ── Accent ──
-    '--hsn-accent-teal-primary': `rgba(${c.teal400}, ${o[88]})`,
-    '--hsn-accent-teal-secondary': `rgba(${c.teal400}, ${o[36]})`,
-    '--hsn-accent-green-primary': `rgba(${c.green400}, ${o[88]})`,
-    '--hsn-accent-green-secondary': `rgba(${c.green400}, ${o[32]})`,
-    '--hsn-accent-orange-primary': `rgba(${c.orange400}, ${o[88]})`,
-    '--hsn-accent-orange-secondary': `rgba(${c.orange400}, ${o[36]})`,
-    '--hsn-accent-pink-primary': `rgba(${c.pink400}, ${o[88]})`,
-    '--hsn-accent-pink-secondary': `rgba(${c.pink400}, ${o[36]})`,
-    '--hsn-accent-yellow-primary': `rgba(${c.yellow400}, ${o[88]})`,
-    '--hsn-accent-yellow-secondary': `rgba(${c.yellow400}, ${o[36]})`,
-    '--hsn-accent-blue-primary': `rgba(${c.blue400}, ${o[88]})`,
-    '--hsn-accent-blue-secondary': `rgba(${c.blue400}, ${o[36]})`,
-    '--hsn-accent-red-primary': `rgba(${c.red400}, ${o[88]})`,
-    '--hsn-accent-red-secondary': `rgba(${c.red400}, ${o[36]})`,
-    '--hsn-accent-indigo-primary': `rgba(${c.indigo400}, ${o[88]})`,
-    '--hsn-accent-indigo-secondary': `rgba(${c.indigo400}, ${o[36]})`,
-    // ── Shadows ──
-    '--hsn-shadow-l1': '0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 36px -22px rgba(0, 0, 0, 0.55)',
-    '--hsn-shadow-l2': '0 1px 0 rgba(255, 255, 255, 0.05), 0 22px 48px -26px rgba(0, 0, 0, 0.62)',
-    '--hsn-shadow-l3': '0 1px 0 rgba(255, 255, 255, 0.06), 0 32px 70px -30px rgba(0, 0, 0, 0.68)',
-    '--hsn-shadow-inset': 'inset 0 1px 0 rgba(255, 255, 255, 0.06)',
-    '--hsn-shadow-secondary-button': '0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 28px -18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
-    '--hsn-shadow-destructive-button': 'inset 0px -1px 0px 1px rgba(248, 113, 113, 0.12), inset 0px 1px 0px rgba(248, 113, 113, 0.12)',
-    '--hsn-shadow-dropdown': 'rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 2px 0 inset',
-    '--hsn-shadow-drawer': '0px 0px 40px rgba(0, 0, 0, 0.1)',
+    '--hsn-accent-teal-primary': `rgb(${c.teal400})`,
+    '--hsn-accent-teal-secondary': `rgba(${c.teal500}, 0.16)`,
+
+    '--hsn-accent-green-primary': `rgb(${c.green400})`,
+    '--hsn-accent-green-secondary': '#14532d',
+    '--hsn-accent-orange-primary': `rgb(${c.orange400})`,
+    '--hsn-accent-orange-secondary': '#431407',
+    '--hsn-accent-pink-primary': `rgb(${c.pink400})`,
+    '--hsn-accent-pink-secondary': '#500724',
+    '--hsn-accent-yellow-primary': `rgb(${c.yellow400})`,
+    '--hsn-accent-yellow-secondary': '#422006',
+    '--hsn-accent-blue-primary': `rgb(${c.blue400})`,
+    '--hsn-accent-blue-secondary': '#1e3a5f',
+    '--hsn-accent-red-primary': `rgb(${c.red400})`,
+    '--hsn-accent-red-secondary': '#450a0a',
+    '--hsn-accent-indigo-primary': `rgb(${c.indigo400})`,
+    '--hsn-accent-indigo-secondary': '#1e1b4b',
+
+    // ── Shadows — floating overlays only ──
+    '--hsn-shadow-l1': '0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.18)',
+    '--hsn-shadow-l2': '0 4px 12px rgba(0, 0, 0, 0.36), 0 2px 4px rgba(0, 0, 0, 0.24)',
+    '--hsn-shadow-l3': '0 12px 32px rgba(0, 0, 0, 0.48), 0 4px 8px rgba(0, 0, 0, 0.28)',
+    '--hsn-shadow-inset': 'inset 0 1px 0 rgba(255, 255, 255, 0.04)',
+    '--hsn-shadow-secondary-button': '0 1px 2px rgba(0, 0, 0, 0.20)',
+    '--hsn-shadow-destructive-button': 'inset 0 0 0 1px rgba(248, 113, 113, 0.20)',
+    '--hsn-shadow-dropdown': '0 8px 24px rgba(0, 0, 0, 0.40), 0 2px 6px rgba(0, 0, 0, 0.28)',
+    '--hsn-shadow-drawer': '4px 0 24px rgba(0, 0, 0, 0.32)',
+    '--hsn-shadow-dialog': '0 20px 60px rgba(0, 0, 0, 0.56), 0 8px 20px rgba(0, 0, 0, 0.36)',
+
+    '--hsn-primary-button-hover-shadow': `0 4px 14px rgba(${c.teal500}, 0.32)`,
+    '--hsn-primary-button-hover-inset-shadow': 'none',
+
     // ── Misc ──
-    '--hsn-bg-cell-unread': `linear-gradient(0deg, rgba(${c.white}, ${o[14]}), rgba(${c.white}, ${o[14]})), rgb(${c.black})`,
-    '--hsn-status-bar-color': `linear-gradient(0deg, rgba(${c.white}, ${o[12]}), rgba(${c.white}, ${o[12]})), rgb(${c.black})`,
-    '--hsn-illustration-fill': `rgb(${c.grey800})`,
+    '--hsn-status-bar-color': '#0f172a',
+    '--hsn-illustration-fill': '#1e293b',
+    '--hsn-divider': '#1e293b',
+    '--hsn-scrollbar-thumb': '#334155',
+    '--hsn-scrollbar-track': '#1e293b',
   },
 };
 

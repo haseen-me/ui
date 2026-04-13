@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef } from 'react';
+import React, { CSSProperties, forwardRef, useState } from 'react';
 
 import { sizeHeight, transitions } from '../../tokens';
 import { ThemeMode } from '../../theme/ThemeProvider';
@@ -20,6 +20,8 @@ export interface IconButtonProps {
   dataTestId?: string;
 }
 
+type InteractionState = 'default' | 'hover' | 'active';
+
 // ─── Component ──────────────────────────────────────────────────────────────────
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
@@ -38,15 +40,35 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     },
     ref
   ) => {
-    const dim = sizeHeight[size as keyof typeof sizeHeight] ?? sizeHeight.medium;
+    const [interactionState, setInteractionState] = useState<InteractionState>('default');
 
+    const dim = sizeHeight[size as keyof typeof sizeHeight] ?? sizeHeight.medium;
     const v = (cssVar: string) => getThemedColor(`var(${cssVar})`, forceTheme);
 
-    const bgMap: Record<Type, string> = {
-      [Type.PRIMARY]: v('--hsn-cta-primary-default'),
-      [Type.SECONDARY]: v('--hsn-cta-secondary-default'),
-      [Type.TERTIARY]: v('--hsn-cta-tertiary-default'),
-      [Type.DESTRUCTIVE]: v('--hsn-cta-destructive-default'),
+    const effectiveState = disabled ? 'default' : interactionState;
+
+    // Background maps: solid surfaces for each button type and state
+    const bgMap: Record<Type, Record<InteractionState, string>> = {
+      [Type.PRIMARY]: {
+        default: v('--hsn-cta-primary-default'),
+        hover: v('--hsn-cta-primary-hover'),
+        active: v('--hsn-cta-primary-active'),
+      },
+      [Type.SECONDARY]: {
+        default: v('--hsn-cta-secondary-default'),
+        hover: v('--hsn-cta-secondary-hover'),
+        active: v('--hsn-cta-secondary-active'),
+      },
+      [Type.TERTIARY]: {
+        default: v('--hsn-cta-tertiary-default'),
+        hover: v('--hsn-cta-tertiary-hover'),
+        active: v('--hsn-cta-tertiary-active'),
+      },
+      [Type.DESTRUCTIVE]: {
+        default: v('--hsn-cta-destructive-default'),
+        hover: v('--hsn-cta-destructive-hover'),
+        active: v('--hsn-cta-destructive-active'),
+      },
     };
 
     const colorMap: Record<Type, string> = {
@@ -62,13 +84,16 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       justifyContent: 'center',
       width: `${dim}px`,
       height: `${dim}px`,
-      borderRadius: '8px',
-      background: disabled ? 'transparent' : bgMap[type],
+      borderRadius: '6px',
+      background: disabled ? 'transparent' : bgMap[type][effectiveState],
       color: disabled ? v('--hsn-icon-disabled') : colorMap[type],
-      border: type === Type.SECONDARY ? `1px solid ${v('--hsn-border-secondary')}` : 'none',
+      border: type === Type.SECONDARY
+        ? `1px solid ${v('--hsn-border-primary')}`
+        : 'none',
       cursor: disabled ? 'not-allowed' : 'pointer',
-      opacity: disabled ? 0.6 : 1,
-      transition: `all ${transitions.normal} ${transitions.easing}`,
+      opacity: disabled ? 0.5 : 1,
+      transform: interactionState === 'active' && !disabled ? 'translateY(1px)' : 'none',
+      transition: `background ${transitions.fast} ${transitions.easing}, transform ${transitions.fast} ${transitions.easing}`,
       outline: 'none',
       padding: 0,
       flexShrink: 0,
@@ -85,6 +110,11 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         data-testid={dataTestId}
         title={tooltip}
         aria-label={tooltip}
+        aria-disabled={disabled}
+        onMouseEnter={() => !disabled && setInteractionState('hover')}
+        onMouseLeave={() => setInteractionState('default')}
+        onMouseDown={() => !disabled && setInteractionState('active')}
+        onMouseUp={() => !disabled && setInteractionState('hover')}
       >
         {icon}
       </button>
